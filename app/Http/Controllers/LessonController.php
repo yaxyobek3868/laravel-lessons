@@ -5,19 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Lesson;
 use App\Models\Course;
 use App\Http\Requests\LessonRequest;
+use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('role:admin,teacher');
-    }
-
     public function index()
     {
-        $lessons = auth()->user()->isTeacher()
-            ? Lesson::whereHas('course', fn($q) => $q->where('teacher_id', auth()->id()))->get()
-            : Lesson::all();
+        $lessons = Lesson::whereHas('course', fn($q) => $q->where('teacher_id', Auth::id()))->get();
 
         return view('lessons.index', compact('lessons'));
     }

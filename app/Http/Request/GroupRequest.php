@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Request;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 class GroupRequest extends FormRequest
 {
-    public function authorize() 
+    public function authorize()
     {
         return Auth::check(); // auth()->user()->isAdmin() || auth()->user()->isTeacher();
     }

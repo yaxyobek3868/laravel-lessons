@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Request;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 class LessonRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         return Auth::check(); // auth()->user()->isAdmin() || auth()->user()->isTeacher();
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'title'=>'required|string|max:255',

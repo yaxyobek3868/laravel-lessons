@@ -2,23 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Models\Group;
 use App\Models\Course;
 use App\Models\User;
 use App\Http\Requests\GroupRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class GroupController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:admin,teacher');
     }
 
     public function index()
     {
-        $groups = auth()->user()->isTeacher()
-            ? Group::where('teacher_id', auth()->id())->get()
-            : Group::all();
+        $p = UserRole::person();
+
+        dd($p['student']);
+        $groups =  Group::where('teacher_id', Auth::id())->get();
 
         return view('groups.index', compact('groups'));
     }
@@ -26,7 +29,7 @@ class GroupController extends Controller
     public function create()
     {
         $teachers = User::where('role','teacher')->get();
-        $courses = Course::all();
+        $courses = Course::get();
         return view('groups.create', compact('teachers','courses'));
     }
 
@@ -54,4 +57,5 @@ class GroupController extends Controller
         $group->delete();
         return redirect()->route('groups.index')->with('success','Group deleted successfully.');
     }
+
 }

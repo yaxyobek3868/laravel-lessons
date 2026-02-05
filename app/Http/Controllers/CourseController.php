@@ -9,10 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('role:admin,teacher');
-    }
 
     public function index()
     {

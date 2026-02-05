@@ -2,32 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function __construct()
+    public function index(): View
     {
-        // Bu controllerga faqat login qilgan admin foydalanuvchilar kirishi mumkin
-        $this->middleware(['auth', 'role:admin']);
-    }
-
-    // Users ro'yxati
-    public function index()
-    {
-        $users = User::all();
+        $users = User::get();
         return view('users.index', compact('users'));
     }
 
-    // User yaratish formasi
     public function create()
     {
-        return view('users.create');
+        $person = UserRole::person();
+
+        return view('users.create', compact('person'));
     }
 
-    // User saqlash
     public function store(UserRequest $request)
     {
         $validated = $request->validated();
@@ -36,20 +31,18 @@ class UserController extends Controller
             'name' => $validated['name'],
             'email'=> $validated['email'],
             'password'=> Hash::make($validated['password']),
-            'role'=> $validated['role'], // UserRole enum bilan ishlash mumkin
+            'role'=> $validated['role'],
         ]);
 
         return redirect()->route('users.index')
                          ->with('success', 'User created successfully.');
     }
 
-    // User tahrirlash formasi
     public function edit(User $user)
     {
         return view('users.edit', compact('user'));
     }
 
-    // User yangilash
     public function update(UserRequest $request, User $user)
     {
         $validated = $request->validated();
@@ -60,7 +53,7 @@ class UserController extends Controller
             'role'=> $validated['role'],
         ];
 
-        // Agar password berilgan bo‘lsa, hash qilib saqlash
+
         if(!empty($validated['password'])){
             $data['password'] = Hash::make($validated['password']);
         }
@@ -71,7 +64,7 @@ class UserController extends Controller
                          ->with('success', 'User updated successfully.');
     }
 
-    // User o‘chirish
+
     public function destroy(User $user)
     {
         $user->delete();
