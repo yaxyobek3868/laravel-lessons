@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrator;
 
 
-class StudentCourseController extends Controller
+use App\Http\Controllers\Controller;
+
+class GroupStudentsController extends Controller
 {
     public function __invoke()
     {

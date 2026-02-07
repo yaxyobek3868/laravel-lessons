@@ -21,4 +21,13 @@ class CourseRequest extends FormRequest
             'teacher_id'=>'required|exists:users,id'
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'title.required'       => 'Sarlavha bo‘sh bo‘lmasligi kerak',
+            'description.required' => 'Tavsif bo‘sh bo‘lmasligi kerak',
+            'teacher_id.required'  => 'O‘qituvchi tanlanishi shart',
+        ];
+    }
+
 }

@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
-use Illuminate\Support\Facades\Auth;
+use App\Enums\UserRole;
+use App\Http\Controllers\Controller;
+use App\Http\Request\LoginRequest;
+use App\Http\Request\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -20,7 +22,7 @@ class AuthController extends Controller
     {
         if (Auth::attempt($request->validated())) {
             $request->session()->regenerate();
-            return redirect()->intended(route('users.index'));
+            return redirect()->intended("users");
         }
 
         return back()->withErrors(['login' => 'Login yoki parol xato'])
@@ -47,12 +49,11 @@ class AuthController extends Controller
         $data = $request->validated();
 
         $user = User::create([
-            'last_name' => $data['last_name'],
-            'first_name' => $data['first_name'],
+            'name' => $data['name'],
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => '2',
+            'role' => UserRole::Student,
         ]);
 
 

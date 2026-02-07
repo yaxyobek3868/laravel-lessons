@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrator;
 
 use App\Enums\UserRole;
-use App\Models\Group;
-use App\Models\Course;
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use App\Http\Request\GroupRequest;
+use App\Models\Course;
+use App\Models\Group;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -18,9 +19,6 @@ class GroupController extends Controller
 
     public function index()
     {
-        $p = UserRole::person();
-
-
         $groups =  Group::where('teacher_id', Auth::id())->get();
 
         return view('groups.index', compact('groups'));

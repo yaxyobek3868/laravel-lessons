@@ -6,7 +6,7 @@ use App\Models\Course;
 use App\Models\User;
 use App\Http\Request\CourseRequest;
 use Illuminate\Support\Facades\Auth;
-use app\Enums\UserRole;
+use App\Enums\UserRole;
 
 class CourseController extends Controller
 {

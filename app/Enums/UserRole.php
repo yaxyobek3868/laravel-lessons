@@ -2,15 +2,21 @@
 
 namespace App\Enums;
 
-enum UserRole
+enum UserRole: int
 {
-    const int Admin = 1;
-    const int Teacher = 2;
-    const int Student = 3;
+    case Admin = 1;
+    case Teacher = 2;
+    case Student = 3;
+
 
     public function isAdmin(): bool
     {
         return self::Admin == $this;
+    }
+
+    public function isTeacher(): bool
+    {
+        return self::Teacher == $this;
     }
 
 

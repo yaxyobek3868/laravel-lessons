@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use app\Models\Profile;
-use app\Models\Course;
 
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-
 
     protected $fillable = [
         'name',
@@ -20,21 +18,25 @@ class User extends Authenticatable
         'username',
         'status',
         'password',
-        'role'
+        'role',
+        "status",
+        "phone",
+        "address",
     ];
 
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token'
     ];
 
-
-
-    // User → Profile
-    public function profile()
+    protected function casts(): array
     {
-        return $this->hasOne(Profile::class);
+        return [
+            'role' => UserRole::class,
+        ];
     }
+
+
 
     // Teacher → Courses
     public function courses()
@@ -59,20 +61,4 @@ class User extends Authenticatable
         );
     }
 
-  
-
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
-
-    public function isTeacher()
-    {
-        return $this->role === 'teacher';
-    }
-
-    public function isStudent()
-    {
-        return $this->role === 'student';
-    }
 }

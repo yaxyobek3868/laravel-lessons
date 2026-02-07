@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('course_id')->constrained();
-            $table->foreignId('teacher_id')->constrained('users');
+            $table->foreignId('teacher_id')->constrained('users')->cascadeOnDelete();
+            $table->boolean('status')->nullable();
+            $table->time("hours")->nullable();
+            $table->jsonb("days")->nullable();
             $table->timestamps();
         });
     }

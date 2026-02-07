@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrator;
 
-use App\Models\User;
 use App\Enums\UserRole;
+use App\Http\Controllers\Controller;
 use App\Http\Request\UserRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
@@ -12,28 +13,26 @@ class UserController extends Controller
 {
     public function index(): View
     {
-        $users = User::get();
+        $users = User::whereNot("role", UserRole::Admin)->orderBy("role")->get();
         return view('users.index', compact('users'));
     }
 
     public function create(): View
     {
-        
         $roles = UserRole::person();
-
         return view('users.create', compact('roles'));
     }
 
     public function store(UserRequest $request)
     {
-        $data = $request->validated();
-
         User::create([
-            'name'     => $request->validated()['name'],
-            'email'=> $request->validated()['email'],
-            'password'=> Hash::make($request->validated()['password']),
-            'role'     => $request->validated()['role'],
-            
+            'name'      => $request->validated()['name'],
+            'address'   => $request->validated()['address'],
+            'phone'     => $request->validated()['phone'],
+            'email'     => $request->validated()['email'],
+            'username'  => $request->validated()['username'],
+            'password'  => Hash::make($request->validated()['password']),
+            'role'      => $request->validated()['role'],
         ]);
 
         return redirect()
@@ -43,11 +42,11 @@ class UserController extends Controller
 
     public function edit(User $user): View
     {
-        
         $roles = UserRole::person();
 
         return view('users.edit', compact('user', 'roles'));
     }
+
     public function show($id)
     {
         $user = User::findOrFail($id);
@@ -56,20 +55,22 @@ class UserController extends Controller
 
     public function update(UserRequest $request, User $user)
     {
-        $data = $request->validated();
+        $user->fill([
+            'name'      => $request->validated()['name'],
+            'address'   => $request->validated()['address'],
+            'phone'     => $request->validated()['phone'],
+            'email'     => $request->validated()['email'],
+            'username'  => $request->validated()['username'],
+            'role'      => $request->validated()['role'],
+        ]);
 
-        $updateData = [
-            'name'  => $request->validated()['name'],
-            'email'=> $request->validated()['email'],
-            'role'  => $request->validated()['role'],
-        ];
-
-        
         if (!empty($data['password'])) {
-            $updateData['password'] = Hash::make($data['password']);
+            $user->fill([
+                'password' => Hash::make($request->validated(['password']))
+            ]);
         }
 
-        $user->update($updateData);
+        $user->save();
 
         return redirect()
             ->route('users.index')
