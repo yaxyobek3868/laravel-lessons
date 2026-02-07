@@ -9,7 +9,7 @@ class LessonRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return Auth::check(); // auth()->user()->isAdmin() || auth()->user()->isTeacher();
+        return Auth::check(); 
     }
 
     public function rules(): array

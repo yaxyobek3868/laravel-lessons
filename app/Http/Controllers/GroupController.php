@@ -6,9 +6,9 @@ use App\Enums\UserRole;
 use App\Models\Group;
 use App\Models\Course;
 use App\Models\User;
-use App\Http\Requests\GroupRequest;
+use App\Http\Request\GroupRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+
 
 class GroupController extends Controller
 {
@@ -20,7 +20,7 @@ class GroupController extends Controller
     {
         $p = UserRole::person();
 
-        dd($p['student']);
+
         $groups =  Group::where('teacher_id', Auth::id())->get();
 
         return view('groups.index', compact('groups'));

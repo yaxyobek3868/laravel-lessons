@@ -9,7 +9,7 @@ class GroupRequest extends FormRequest
 {
     public function authorize()
     {
-        return Auth::check(); // auth()->user()->isAdmin() || auth()->user()->isTeacher();
+        return Auth::check(); 
     }
 
     public function rules()

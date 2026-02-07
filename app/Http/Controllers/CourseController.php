@@ -4,19 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\User;
-use App\Http\Requests\CourseRequest;
+use App\Http\Request\CourseRequest;
 use Illuminate\Support\Facades\Auth;
+use app\Enums\UserRole;
 
 class CourseController extends Controller
 {
 
     public function index()
     {
-        $courses = Auth::user()->isTeacher()
-            ? Course::where('teacher_id', auth()->id())->get()
-            : Course::all();
+        $p = UserRole::person();
 
-        return view('courses.index', compact('courses'));
+
+        $cousre =  Course::where('teacher_id', Auth::id())->get();
+
+        return view('groups.index', compact('groups'));
     }
 
     public function create()

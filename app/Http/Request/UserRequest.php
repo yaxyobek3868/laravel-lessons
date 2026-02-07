@@ -4,7 +4,7 @@ namespace App\Http\Request;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use staabm\SideEffectsDetector\SideEffect;
+
 
 class UserRequest extends FormRequest
 {
@@ -19,6 +19,8 @@ class UserRequest extends FormRequest
 
         return [
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'status' => 'required',
             'email' => 'required|email|unique:users,email,' . $userId,
             'password' => $this->isMethod('post') ? 'required|string|min:6' : 'nullable|string|min:6',
             'role' => 'required|numeric|in:1,2,3',
