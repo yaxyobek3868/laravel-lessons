@@ -6,9 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+   
     public function authorize(): bool
     {
         return true;
@@ -22,11 +20,6 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    /**
-     * Custom error messages for validation
-     *
-     * @return array<string, string>
-     */
     public function messages(): array
     {
         return [

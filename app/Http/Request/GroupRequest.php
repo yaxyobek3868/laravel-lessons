@@ -18,8 +18,15 @@ class GroupRequest extends FormRequest
             'name'       => 'required|string|max:255',
             'course_id'  => 'required|exists:courses,id',
             'teacher_id' => 'required|exists:users,id',
+            'status'     => 'required|in:0,1',
+            'hours'      => 'required|string', 
+            'days'       => 'required|array',   
+            'days.*'     => 'in:Mon,Tue,Wed,Thu,Fri,Sat,Sun', 
+            'students'   => 'required|array',
+            'students.*' => 'numeric',
         ];
     }
+
 
     public function messages()
     {

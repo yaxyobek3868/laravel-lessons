@@ -19,6 +19,11 @@ enum UserRole: int
         return self::Teacher == $this;
     }
 
+    public function isStudent(): bool
+    {
+        return self::Student == $this;
+    }
+
 
     public static function lists(): array
     {

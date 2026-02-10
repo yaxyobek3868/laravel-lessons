@@ -8,36 +8,26 @@ use App\Enums\UserRole;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  mixed ...$roles
-     * @return mixed
-     */
     public function handle(Request $request, Closure $next, ...$roles)
     {
         $user = $request->user();
-        if (!$user) {
-            abort(401, 'Login qilishingiz kerak'); 
+
+        if (! $user) {
+            abort(401, 'Login qilishingiz kerak');
         }
 
-        
-        $allowedRoles = array_map(function ($role) {
+        foreach ($roles as $role) {
             $role = ucfirst(strtolower($role));
-            return match($role) {
-                'Admin' => UserRole::Admin,
-                'Teacher' => UserRole::Teacher,
-                'Student' => UserRole::Student,
-                default => abort(500, "Noma'lum rol: $role"),
-            };
-        }, $roles);
 
-        if (!in_array($user->role, $allowedRoles, true)) {
-            abort(403, 'Sizda ruxsat yoq'); 
+            if (! defined(UserRole::class . '::' . $role)) {
+                abort(403, "Noma'lum rol: $role");
+            }
+
+            if ($user->role === constant(UserRole::class . '::' . $role)) {
+                return $next($request);
+            }
         }
 
-        return $next($request);
+        abort(403, 'Sizda ruxsat yo‘q');
     }
 }

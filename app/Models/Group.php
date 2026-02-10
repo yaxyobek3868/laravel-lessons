@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -12,22 +13,30 @@ class Group extends Model
     protected $fillable = [
         'name',
         'course_id',
-        'teacher_id'
+        'teacher_id',
+        'status',
+        'hours',
+        'days',
     ];
 
-    // Group → Course
+
+    protected $casts = [
+        'days' => 'array',
+        'status' => 'boolean',
+    ];
+
     public function course()
     {
         return $this->belongsTo(Course::class);
     }
 
-    // Group → Teacher
+    
     public function teacher()
     {
         return $this->belongsTo(User::class, 'teacher_id');
     }
 
-    // Group → Students
+   
     public function students()
     {
         return $this->belongsToMany(
@@ -36,5 +45,12 @@ class Group extends Model
             'group_id',
             'student_id'
         );
+    }
+
+
+   
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class);
     }
 }

@@ -2,20 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class GroupStudent extends Model
+class GroupStudent extends Pivot
 {
-    use HasFactory;
-
     protected $table = 'group_students';
-
-    public $timestamps = false;
 
     protected $fillable = [
         'group_id',
-        'student_id'
+        'student_id',
     ];
 
     public function group()

@@ -15,7 +15,7 @@ class Profile extends Model
         'address'
     ];
 
-    // Profile → User
+  
     public function user()
     {
         return $this->belongsTo(User::class);

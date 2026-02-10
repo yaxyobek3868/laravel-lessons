@@ -1,2 +1,13 @@
-*
-!.gitignore
+/vendor
+/node_modules
+/public/storage   # symbolic link, Git-ga tushmaydi
+/.idea
+/.vscode
+/.env
+/storage/*.key
+/storage/*.log
+/storage/framework/cache/data
+/storage/framework/sessions
+/storage/framework/views
+/storage/framework/testing
+/storage/app/public   # bu yerda asl fayllarni saqlash mumkin, agar istasangiz

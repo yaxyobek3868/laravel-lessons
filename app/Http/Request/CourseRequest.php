@@ -12,21 +12,21 @@ class CourseRequest extends FormRequest
     {
         return Auth::check();
     }
-
-    public function rules()
+    public function rules(): array
     {
         return [
-            'title'=>'required|string|max:255',
-            'description'=>'nullable|string',
-            'teacher_id'=>'required|exists:users,id'
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            
         ];
     }
+
     public function messages(): array
     {
         return [
             'title.required'       => 'Sarlavha bo‘sh bo‘lmasligi kerak',
             'description.required' => 'Tavsif bo‘sh bo‘lmasligi kerak',
-            'teacher_id.required'  => 'O‘qituvchi tanlanishi shart',
+          
         ];
     }
 

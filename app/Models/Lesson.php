@@ -10,14 +10,25 @@ class Lesson extends Model
     use HasFactory;
 
     protected $fillable = [
-        'course_id',
+        'group_id',
         'title',
-        'content'
+        'content',
+        'file',
     ];
 
-    // Lesson → Course
-    public function course()
+    
+    public function group()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Group::class);
+    }
+
+    
+    public function scopeForUser($query, $user)
+    {
+        return match (true) {
+            $user->role->isAdmin() => $query,
+            $user->role->isTeacher() => $query->whereHas('group', fn($q) => $q->where('teacher_id', $user->id)),
+            default => $query->whereRaw('1 = 0'), 
+        };
     }
 }
